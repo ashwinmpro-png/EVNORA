@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -128,7 +129,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                         image: _selectedImagePath != null || user?.profileImage != null
                             ? DecorationImage(
                                 image: _selectedImagePath != null
-                                    ? FileImage(java.io.File(_selectedImagePath!)) as ImageProvider
+                                    ? NetworkImage(_selectedImagePath!) as ImageProvider
                                     : NetworkImage(user!.profileImage!),
                                 fit: BoxFit.cover,
                               )
@@ -260,16 +261,3 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 }
 
-// Workaround for dart:io File import issue
-class java {
-  static final io = _IO();
-}
-
-class _IO {
-  File File(String path) => _File(path);
-}
-
-class _File {
-  final String path;
-  _File(this.path);
-}
